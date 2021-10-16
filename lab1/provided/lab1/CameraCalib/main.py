@@ -9,7 +9,8 @@ import os
 # 0. Константы:
 # 0.1. Изображение:
 # фотография  шахматной доски, сделаная параллельно
-IMG_FILE = "C:/work/miet/mag_sem_3/computer_vision/lab1/input/chessboard/24_cm.jpg"
+IMG_FILE = os.path.join(os.path.dirname(__file__),
+                        "../../../input/chessboard/parallel/24_cm.jpg")
 # размер одной клетки в миллиметрах по [вертикали, горизонтали]
 SQUARE_SIZES_MM = [30, 30]
 # Общее количество пересечений клеток (ключевых точек)
@@ -52,8 +53,10 @@ drw.show_objects(
 
 # 5. Фильтруем найденные и идеальные объекты по их совпадению:
 objs, objs_ideal = optics.objs_matching(objs, objs_ideal, AREA_OF_OBJ)
-drw.show_objects(objs, "+", "red", img=img0, title="matching objects", waituser=False)
-drw.show_objects(objs_ideal, "o", "blue", title="matching objects: %d" % len(objs))
+drw.show_objects(objs, "+", "red", img=img0,
+                 title="matching objects", waituser=False)
+drw.show_objects(objs_ideal, "o", "blue",
+                 title="matching objects: %d" % len(objs))
 
 # 6. Расчет фокусного расстояния:
 focus_mm = optics.focus_calc(
@@ -89,6 +92,7 @@ camera = {
     "FOVs": FOV,
     "DIST_COEF": dist_coef,
 }
-file = open(os.path.join(os.path.dirname(__file__), "../../../provided/camera.txt"), "w")
+file = open(os.path.join(os.path.dirname(__file__),
+            "../../../output/camera.txt"), "w")
 file.write("%s = %s\n" % ("camera", camera))
 file.close()
