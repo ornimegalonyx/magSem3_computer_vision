@@ -9,7 +9,7 @@ os.system('cls')
 # 0. Параметры:
 IMG_FILE = os.getcwd().replace('\\', '/') + "/lab1/input/var16/15cm_12MP.jpg"
 PIXEL_SIZE_MM = 2 * 0.8 * 10 ** -3
-DISTANSE_MM = 150
+DISTANCE_MM = 150
 FOCUS_MM = 4.94
 LowPassCore = np.array(
     [
@@ -103,12 +103,12 @@ length_bl_br = np.sqrt((p_bl[0] - p_br[0])**2 + (p_bl[1] - p_br[1])**2)
 
 # 6. Считаем периметр:
 perimeter = length_bl_t + length_t_br + length_bl_br
-perimeter_mm = (perimeter * PIXEL_SIZE_MM) * DISTANSE_MM / FOCUS_MM
+perimeter_mm = (perimeter * PIXEL_SIZE_MM) * DISTANCE_MM / FOCUS_MM
 
 # 7. Длина ребер в мм:
-length_bl_t_mm = (length_bl_t * PIXEL_SIZE_MM) * DISTANSE_MM / FOCUS_MM
-length_t_br_mm = (length_t_br * PIXEL_SIZE_MM) * DISTANSE_MM / FOCUS_MM
-length_bl_br_mm = (length_bl_br * PIXEL_SIZE_MM) * DISTANSE_MM / FOCUS_MM
+length_bl_t_mm = (length_bl_t * PIXEL_SIZE_MM) * DISTANCE_MM / FOCUS_MM
+length_t_br_mm = (length_t_br * PIXEL_SIZE_MM) * DISTANCE_MM / FOCUS_MM
+length_bl_br_mm = (length_bl_br * PIXEL_SIZE_MM) * DISTANCE_MM / FOCUS_MM
 
 # 8. Угловые размеры фигуры:
 AngleY = math.atan((p_t[0] - p_br[0]) *
