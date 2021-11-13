@@ -20,7 +20,8 @@ def Neyman_Pearson(img, mu, sigma):
 
 # Детектор по методу Оцу:
 def Otsu(img):
-    th, imgo = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)  # реализован в OpenCV
+    th, imgo = cv2.threshold(
+        img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)  # реализован в OpenCV
     return np.bool_(imgo)
 
 
@@ -28,7 +29,7 @@ def Otsu(img):
 def adaptive(img):
 
     # Параметры:
-    R = 11               # размер апертуры
+    R = 15               # размер апертуры
     rh = np.uint8(np.floor(R/2))
 
     # Сдвиговое окно:
@@ -44,8 +45,11 @@ def adaptive(img):
     for y in range(windows.shape[0]):
         for x in range(windows.shape[1]):
             aper = windows[y][x]
+            mu = np.mean(aper)
+            sigma = np.std(aper)
+            k = 0.03
             # расчет порога:
-            # h[y+rh][x+rh] = ...
+            h[y+rh][x+rh] = mu + k * sigma
 
     # решающее правило:
     imgo = img > h
