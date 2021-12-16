@@ -6,17 +6,17 @@ from rule import Rule
 from perceptron import Perceptron
 
 # 0. Parameters:
-DATASET_PATH = "../data/dataset/"
-DATA_PATH = "../data/"
+DATASET_PATH = "C:/work/miet/mag_sem_3/computer_vision/lab4/provided/data/dataset/"
+DATA_PATH = "C:/work/miet/mag_sem_3/computer_vision/lab4/provided/data/"
 
 
 # 1. Init dataset:
 dataset = {}
 for i in range(1, 6):
-    dataset['black_currant_%d.png' % i] = "black_currant"
-    dataset['blackberry_%d.png' % i] = "blackberry"
-    dataset['blueberry_%d.png' % i] = "blueberry"
-    dataset['raspberry_%d.png' % i] = "raspberry"
+    dataset["black_currant_%d.png" % i] = "black_currant"
+    dataset["blackberry_%d.png" % i] = "blackberry"
+    dataset["blueberry_%d.png" % i] = "blueberry"
+    dataset["raspberry_%d.png" % i] = "raspberry"
 
 
 # 2. Get objects and its features:
@@ -39,24 +39,28 @@ vis.plot_feautres(ax[1], black_currant, blackberry, blueberry, raspberry)
 vis.show_and_wait_any_key(fig)
 
 
-# 4. Rule for binary classification (blueberry/not blueberry):
+# 4. Rule for binary classification ((blueberry and blackberry)/not (blueberry and blackberry)):
 
-## 4.1. points for blueberry field:
-points = np.array([[0.45, 0.475], [0.40, 0.475], [0.25, 0.55], [0.4, 0.6]])
+## 4.1. points for blueberry and blackberry field:
+points = np.array([[0.8, 0.33], [0.60, 0.275], [0.25, 0.55], [0.3, 0.6]])
 rule = Rule(points)
 
 ## 4.2. visualisation:
-fig.suptitle("Область признаков для blueberry (нажмите пробел для продолжения)")
-ax[1].plot(points[:, 0], points[:, 1], '*b')
-ax[1].plot(points[:, 0], points[:, 1], 'b')
-ax[1].plot(points[[-1, 0], 0], points[[-1, 0], 1], 'b')
-ax[1].fill(points[:, 0], points[:, 1], alpha=0.1, color='b')
+fig.suptitle(
+    "Область признаков для blueberry и blackberry (нажмите пробел для продолжения)"
+)
+ax[1].plot(points[:, 0], points[:, 1], "*b")
+ax[1].plot(points[:, 0], points[:, 1], "b")
+ax[1].plot(points[[-1, 0], 0], points[[-1, 0], 1], "b")
+ax[1].fill(points[:, 0], points[:, 1], alpha=0.1, color="b")
 vis.show_and_wait_any_key(fig)
 
 
 # 5. Testing:
 print("Binary classification with classic method:")
-fig.suptitle("Распознавание черники (blueberry) по изображению (нажмите пробел для продолжения)")
+fig.suptitle(
+    "Распознавание черники (blueberry и blackberry) по изображению (нажмите пробел для продолжения)"
+)
 for i in range(1, 5):
 
     ## 5.1. get unknown berry:
@@ -65,14 +69,14 @@ for i in range(1, 5):
 
     ## 5.2. visualisation:
     vis.berry_image_view(ax[0], berry)
-    plt_p, = ax[1].plot(features[0], features[1], '+y', label="unknown")
+    (plt_p,) = ax[1].plot(features[0], features[1], "+y", label="unknown")
     ax[1].legend()
 
     ## 5.3. recognition:
     flags = rule.check(features)
-    group = ("not blueberry", 'r')
+    group = ("not blueberry or blackberry", "r")
     if flags[0] & flags[1] & ~flags[2] & ~flags[3]:
-        group = ("blueberry", 'g')
+        group = ("blueberry or blackberry", "g")
 
     ## 5.4. pass recognition result to output:
     ax[0].text(10, 10, "%s" % group[0], backgroundcolor=group[1])
@@ -83,14 +87,14 @@ for i in range(1, 5):
     plt_p.remove()
 
 
-# 6. Perceptron for binary classification (blueberry/not blueberry):
+# 6. Perceptron for binary classification ((raspberry and blackberry)/not (raspberry and blackberry)):
 
 ## 6.1. get features and answers for trainig:
 features = []
 answers = []
 for berry in berrys:
     features.append([berry.feauters.size, berry.feauters.color_gray])
-    if berry.group == "blueberry":
+    if (berry.group == "raspberry") or berry.group == "blackberry":
         answers.append([1])
     else:
         answers.append([0])
@@ -124,23 +128,27 @@ vis.show_and_wait_any_key(fig)
 
 # 7. Testing perceptron:
 print("Binary classification with perceptron:")
-fig.suptitle("Распознавание черники (blueberry) по изображению (нажмите пробел для продолжения)")
+fig.suptitle(
+    "Распознавание черники (blueberry и blackberry) по изображению (нажмите пробел для продолжения)"
+)
 for i in range(1, 5):
 
     ## 7.1. get unknown berry:
-    berry = Berry("../data/berry_%d.png" % i)
-    features = berry_nn.data_normalization([berry.feauters.size, berry.feauters.color_gray])
+    berry = Berry(DATA_PATH + "berry_%d.png" % i)
+    features = berry_nn.data_normalization(
+        [berry.feauters.size, berry.feauters.color_gray]
+    )
 
     ## 7.2. visualisation:
     vis.berry_image_view(ax[0], berry)
-    plt_p, = ax[1].plot(features[0], features[1], '+y', label="unknown")
+    (plt_p,) = ax[1].plot(features[0], features[1], "+y", label="unknown")
     ax[1].legend()
 
     ## 7.3. recognition:
     ans = berry_nn.check(features)[0]
-    group = ("not blueberry", 'r')
+    group = ("not raspberry or blackberry", "r")  ################################
     if ans:
-        group = ("blueberry", 'g')
+        group = ("raspberry or blackberry", "g")  ################################
 
     ## 7.4. pass recognition result to output:
     ax[0].text(10, 10, "%s" % group[0], backgroundcolor=group[1])
