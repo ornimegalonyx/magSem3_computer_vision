@@ -16,7 +16,7 @@ def axes_init(rect, title, ticks="off"):
 # Обновление изображения на фигуре:
 def img_update(ax, img, title):
     ax.clear()
-    ax.imshow(img, cmap='gray', vmin=0, vmax=np.max(img))
+    ax.imshow(img, cmap="gray", vmin=0, vmax=np.max(img))
     ax.title.set_text(title)
 
 
